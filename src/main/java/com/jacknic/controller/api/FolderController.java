@@ -5,18 +5,16 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-@Api(tags = "文件", description = "文件操作")
+@Api(description = "文件夹操作", tags = "文件夹")
 @RestController
-@RequestMapping("/api/file")
-public class FileController {
+@RequestMapping("/api/folder")
+public class FolderController {
 
-    @ApiOperation("获取文件列表")
-    @GetMapping("/list")
-    public ModelMap list(@RequestParam(value = "path", defaultValue = "/") String path) {
-        ModelMap modelMap = new ModelMap();
+    @ApiOperation(value = "获取文件列表", notes = "getCount更多说明")
+    @GetMapping("/create")
+    public ModelMap list(ModelMap modelMap) {
         modelMap.addAttribute("name", "Jacknic");
         return modelMap;
     }
