@@ -1,8 +1,8 @@
 package com.jacknic.util;
 
-public class Response {
+public class Result {
 
-    private Response() {
+    private Result() {
     }
 
     /**

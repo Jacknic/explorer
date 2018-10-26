@@ -1,7 +1,6 @@
 package com.jacknic.controller.api;
 
-import com.jacknic.util.JSON;
-import com.jacknic.util.Response;
+import com.jacknic.util.Result;
 import com.jacknic.util.ResultBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -20,7 +19,7 @@ public class FileController {
 
     @ApiOperation("获取文件列表")
     @GetMapping("/list")
-    public String list(
+    public ResultBody list(
             @RequestParam(value = "path", defaultValue = "/") String path,
             HttpServletRequest request,
             HttpServletResponse response
@@ -33,41 +32,40 @@ public class FileController {
         ResultBody resultBody;
         if (dir.exists() && dir.isDirectory()) {
             File[] files = dir.listFiles();
-            resultBody = Response.data(files);
+            resultBody = Result.data(files);
         } else {
-            resultBody = Response.fail(404, "文件夹路径有误");
+            resultBody = Result.fail(404, "文件夹路径有误");
         }
-        JSON.write(outputStream, resultBody);
-        return "";
+        return resultBody;
     }
 
     @ApiOperation("创建新文件")
     @PostMapping("/create")
-    public String create() {
-        return null;
+    public ResultBody create() {
+        return Result.ok();
     }
 
     @ApiOperation("上传新文件")
     @PostMapping("/upload")
-    public String upload() {
-        return null;
+    public ResultBody upload() {
+        return Result.ok();
     }
 
     @ApiOperation("读取文件")
     @GetMapping("/read")
-    public String read() {
-        return null;
+    public ResultBody read() {
+        return Result.ok();
     }
 
     @ApiOperation("删除文件")
     @DeleteMapping("/delete")
-    public String delete() {
-        return null;
+    public ResultBody delete() {
+        return Result.ok();
     }
 
     @ApiOperation("移动文件")
     @PostMapping("/move")
-    public String move() {
-        return null;
+    public ResultBody move() {
+        return Result.ok();
     }
 }

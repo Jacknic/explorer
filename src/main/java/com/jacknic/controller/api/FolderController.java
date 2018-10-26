@@ -1,8 +1,6 @@
 package com.jacknic.controller.api;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.jacknic.util.JSON;
-import com.jacknic.util.Response;
+import com.jacknic.util.Result;
 import com.jacknic.util.ResultBody;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,13 +17,13 @@ public class FolderController {
 
     @ApiOperation(value = "创建文件夹")
     @GetMapping("/create")
-    public String list() throws JsonProcessingException {
-        ResultBody resultBody = Response.ok();
+    public ResultBody list() {
+        ResultBody resultBody = Result.ok();
         String[] names = {"jacknic", "Tom", "Bob"};
         HashMap<String, Object> data = new HashMap<>();
         data.put("users", names);
         resultBody.setData(data);
-        return JSON.string(resultBody);
+        return resultBody;
     }
 
 
