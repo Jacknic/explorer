@@ -22,7 +22,7 @@ public class FolderController {
         String[] names = {"jacknic", "Tom", "Bob"};
         HashMap<String, Object> data = new HashMap<>();
         data.put("users", names);
-        resultBody.setData(data);
+        resultBody.data = data;
         return resultBody;
     }
 

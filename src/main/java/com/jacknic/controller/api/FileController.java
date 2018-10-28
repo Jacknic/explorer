@@ -1,38 +1,58 @@
 package com.jacknic.controller.api;
 
+import com.jacknic.model.bean.FileBean;
+import com.jacknic.util.FileUtils;
 import com.jacknic.util.Result;
 import com.jacknic.util.ResultBody;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 @Api(tags = "file", description = "文件操作")
 @RestController
 @RequestMapping("/api/file")
 public class FileController {
 
+
+    @ApiOperation("显示根目录信息")
+    @GetMapping("/root")
+    public ResultBody root() {
+        File[] files = File.listRoots();
+        ArrayList<FileBean> fileBeans = FileUtils.toFileBeans(files);
+        HashMap<String, Object> resultMap = new HashMap<>();
+        resultMap.put("list", fileBeans);
+        HashMap<String, HashMap<String, Object>> spaceList = new HashMap<>();
+        for (File dir : files) {
+            HashMap<String, Object> spaceInfo = new HashMap<>();
+            spaceInfo.put("total", dir.getTotalSpace());
+            spaceInfo.put("free", dir.getFreeSpace());
+            spaceInfo.put("usable", dir.getUsableSpace());
+            String name = dir.getAbsolutePath().replace('\\', '/');
+            spaceList.put(name, spaceInfo);
+        }
+        resultMap.put("space", spaceList);
+        return Result.data(resultMap);
+    }
+
     @ApiOperation("获取文件列表")
+    @ApiImplicitParam(name = "path", value = "文件夹路径", paramType = "query", required = true)
     @GetMapping("/list")
     public ResultBody list(
-            @RequestParam(value = "path", defaultValue = "/") String path,
-            HttpServletRequest request,
-            HttpServletResponse response
-
-    ) throws IOException {
-        ServletOutputStream outputStream = response.getOutputStream();
-        StringBuffer url = request.getRequestURL();
-        System.out.println("当前的URL：" + url);
+            @RequestParam(value = "path") String path
+    ) {
         File dir = new File(path);
         ResultBody resultBody;
         if (dir.exists() && dir.isDirectory()) {
             File[] files = dir.listFiles();
-            resultBody = Result.data(files);
+            ArrayList<FileBean> fileBeans = FileUtils.toFileBeans(files);
+            HashMap<String, Object> resultMap = new HashMap<>();
+            resultMap.put("list", fileBeans);
+            resultBody = Result.data(resultMap);
         } else {
             resultBody = Result.fail(404, "文件夹路径有误");
         }

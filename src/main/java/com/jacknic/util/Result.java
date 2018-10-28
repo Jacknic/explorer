@@ -17,7 +17,7 @@ public class Result {
      */
     public static ResultBody data(Object data) {
         ResultBody result = ok();
-        result.setData(data);
+        result.data = data;
         return result;
     }
 
@@ -27,8 +27,8 @@ public class Result {
      */
     public static ResultBody fail(int code, String msg) {
         ResultBody result = data(null);
-        result.setCode(code);
-        result.setMsg(msg);
+        result.code = code;
+        result.msg = msg;
         return result;
     }
 }
