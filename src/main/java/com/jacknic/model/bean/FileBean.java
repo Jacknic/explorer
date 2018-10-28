@@ -1,6 +1,5 @@
 package com.jacknic.model.bean;
 
-import javax.validation.constraints.NotNull;
 import java.io.File;
 
 /**
@@ -10,7 +9,7 @@ public class FileBean {
 
     private File mFile;
 
-    public FileBean(@NotNull File file) {
+    public FileBean(File file) {
         this.mFile = file;
     }
 

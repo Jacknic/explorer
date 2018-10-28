@@ -45,11 +45,9 @@ public class FileController {
     public ResultBody list(
             @RequestParam(value = "path") String path
     ) {
-        File dir = new File(path);
+        ArrayList<FileBean> fileBeans = FileUtils.listDir(path);
         ResultBody resultBody;
-        if (dir.exists() && dir.isDirectory()) {
-            File[] files = dir.listFiles();
-            ArrayList<FileBean> fileBeans = FileUtils.toFileBeans(files);
+        if (fileBeans != null) {
             HashMap<String, Object> resultMap = new HashMap<>();
             resultMap.put("list", fileBeans);
             resultBody = Result.data(resultMap);
@@ -79,13 +77,20 @@ public class FileController {
 
     @ApiOperation("删除文件")
     @DeleteMapping("/delete")
-    public ResultBody delete() {
-        return Result.ok();
+    public ResultBody delete(@RequestParam("path") String path) {
+        File file = new File(path);
+        boolean deleteFile = FileUtils.deleteFile(file);
+        if (deleteFile) {
+            return Result.data("删除文件成功");
+        } else {
+            return Result.fail(404, "目标文件不存在");
+        }
+
     }
 
     @ApiOperation("移动文件")
     @PostMapping("/move")
-    public ResultBody move() {
+    public ResultBody move(@RequestParam("path") String path) {
         return Result.ok();
     }
 }

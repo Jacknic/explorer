@@ -41,7 +41,7 @@ public class SwaggerConfig {
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("文件管理器restful API 接口文档")//大标题
-                .version("1.2")//版本
+                .version("1.0")//版本
                 .build();
     }
 }
