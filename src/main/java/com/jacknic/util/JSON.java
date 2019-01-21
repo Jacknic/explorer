@@ -6,8 +6,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.io.OutputStream;
 
+/**
+ * json操作工具类
+ *
+ * @author Jacknic
+ */
 public class JSON {
-    public final static ObjectMapper objectMapper = new ObjectMapper();
+    public final static ObjectMapper JSON_MAPPER = new ObjectMapper();
 
     private JSON() {
     }
@@ -15,8 +20,8 @@ public class JSON {
     /**
      * 返回错误信息
      */
-    private static String error(Exception e) {
-        return "{\"code\":500,\"msg\":\"发生错误：" + e.getMessage() + "\"}";
+    private static String error(String msg) {
+        return "{\"code\":500,\"msg\":\"发生错误：" + msg + "\"}";
     }
 
     /**
@@ -24,10 +29,10 @@ public class JSON {
      */
     public static String string(Object object) {
         try {
-            return objectMapper.writeValueAsString(object);
+            return JSON_MAPPER.writeValueAsString(object);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-            return error(e);
+            return error(e.getMessage());
         }
     }
 
@@ -36,7 +41,7 @@ public class JSON {
      */
     public static void write(OutputStream outputStream, Object object) {
         try {
-            objectMapper.writeValue(outputStream, object);
+            JSON_MAPPER.writeValue(outputStream, object);
         } catch (IOException e) {
             e.printStackTrace();
         }

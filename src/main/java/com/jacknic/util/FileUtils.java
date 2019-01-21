@@ -2,11 +2,17 @@ package com.jacknic.util;
 
 import com.jacknic.model.bean.FileBean;
 
+import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.util.ArrayList;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 /**
  * 文件操作工具类
+ *
+ * @author Jacknic
  */
 public class FileUtils {
 
@@ -52,4 +58,43 @@ public class FileUtils {
             return file.delete();
         }
     }
+
+    /**
+     * 压缩文件
+     */
+    public static void compress(ZipOutputStream zos, File file, String baseDir) throws Exception {
+        if (file.isDirectory()) {
+            baseDir = file.getName() + File.separator;
+            compressDir(zos, file, baseDir);
+        } else if (file.isFile()) {
+            compressFile(zos, file, baseDir);
+        }
+    }
+
+    /**
+     * 压缩文件夹
+     */
+    private static void compressDir(ZipOutputStream zos, File file, String baseDir) throws Exception {
+        File[] files = file.listFiles();
+        for (File fileItem : files) {
+            /*递归调用*/
+            compress(zos, fileItem, baseDir);
+        }
+    }
+
+    /**
+     * 压缩普通文件
+     */
+    private static void compressFile(ZipOutputStream zos, File file, String baseDir) throws Exception {
+        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
+        zos.putNextEntry(new ZipEntry(baseDir + file.getName()));
+        int len;
+        byte[] buffer = new byte[8192];
+        while ((len = bis.read(buffer)) != -1) {
+            zos.write(buffer, 0, len);
+        }
+        zos.closeEntry();
+        bis.close();
+    }
+
 }

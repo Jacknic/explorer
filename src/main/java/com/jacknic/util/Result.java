@@ -1,5 +1,10 @@
 package com.jacknic.util;
 
+/**
+ * 请求响应结果工具类
+ *
+ * @author Jacknic
+ */
 public class Result {
 
     private Result() {

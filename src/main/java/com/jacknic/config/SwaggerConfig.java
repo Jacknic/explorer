@@ -15,6 +15,9 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import java.util.function.Predicate;
 
 
+/**
+ * @author Jacknic
+ */
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
@@ -23,11 +26,12 @@ public class SwaggerConfig {
     public Docket createRestApi() {
         Predicate<RequestHandler> predicate = input -> {
             Class<?> declaringClass = input.declaringClass();
-            if (declaringClass == BasicErrorController.class)// 排除
+            if (declaringClass == BasicErrorController.class) {
                 return false;
-            if (declaringClass.isAnnotationPresent(RestController.class)) // 被注解的类
+            }
+            if (declaringClass.isAnnotationPresent(RestController.class)) {
                 return true;
-            // 被注解的方法
+            }
             return input.isAnnotatedWith(ResponseBody.class);
         };
         return new Docket(DocumentationType.SWAGGER_2)
@@ -40,8 +44,8 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("文件管理器restful API 接口文档")//大标题
-                .version("1.0")//版本
+                .title("文件管理器restful API 接口文档")
+                .version("1.0")
                 .build();
     }
 }

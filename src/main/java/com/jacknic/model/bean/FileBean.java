@@ -1,9 +1,13 @@
 package com.jacknic.model.bean;
 
+import org.springframework.util.StringUtils;
+
 import java.io.File;
 
 /**
  * 文件描述信息
+ *
+ * @author Jacknic
  */
 public class FileBean {
 
@@ -19,7 +23,11 @@ public class FileBean {
      */
     public String getName() {
         String absolutePath = getAbsolutePath();
-        return mFile.isFile() ? mFile.getName() : absolutePath.substring(absolutePath.lastIndexOf('/') + 1);
+        String dirName = absolutePath.substring(absolutePath.lastIndexOf('/') + 1);
+        if (StringUtils.isEmpty(dirName)) {
+            dirName = absolutePath;
+        }
+        return mFile.isFile() ? mFile.getName() : dirName;
     }
 
     /**
