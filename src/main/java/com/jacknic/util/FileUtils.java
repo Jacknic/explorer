@@ -64,7 +64,6 @@ public class FileUtils {
      */
     public static void compress(ZipOutputStream zos, File file, String baseDir) throws Exception {
         if (file.isDirectory()) {
-            baseDir = file.getName() + File.separator;
             compressDir(zos, file, baseDir);
         } else if (file.isFile()) {
             compressFile(zos, file, baseDir);
@@ -76,9 +75,13 @@ public class FileUtils {
      */
     private static void compressDir(ZipOutputStream zos, File file, String baseDir) throws Exception {
         File[] files = file.listFiles();
+        String dir = baseDir + "/" + file.getName();
+        if (files == null || files.length == 0) {
+            zos.putNextEntry(new ZipEntry(dir + "/"));
+            return;
+        }
         for (File fileItem : files) {
-            /*递归调用*/
-            compress(zos, fileItem, baseDir);
+            compress(zos, fileItem, dir);
         }
     }
 
@@ -87,7 +90,7 @@ public class FileUtils {
      */
     private static void compressFile(ZipOutputStream zos, File file, String baseDir) throws Exception {
         BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
-        zos.putNextEntry(new ZipEntry(baseDir + file.getName()));
+        zos.putNextEntry(new ZipEntry(baseDir + "/" + file.getName()));
         int len;
         byte[] buffer = new byte[8192];
         while ((len = bis.read(buffer)) != -1) {

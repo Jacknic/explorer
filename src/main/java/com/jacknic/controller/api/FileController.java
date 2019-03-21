@@ -123,7 +123,7 @@ public class FileController {
             } else {
                 response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadFile.getName() + ".zip\"");
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
-                FileUtils.compress(zipOutputStream, downloadFile, downloadFile.getPath());
+                FileUtils.compress(zipOutputStream, downloadFile, "");
                 zipOutputStream.close();
                 outputStream.close();
             }
