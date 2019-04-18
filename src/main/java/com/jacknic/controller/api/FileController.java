@@ -18,19 +18,21 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.zip.ZipOutputStream;
 
 /**
+ * 文件管理基本操作
+ *
  * @author Jacknic
  */
-@CrossOrigin(origins = "*", maxAge = 3600)
-@Api(tags = "file", description = "文件操作")
+@CrossOrigin(origins = "*")
+@Api(tags = "file", value = "文件操作")
 @RestController
 @RequestMapping("/api/file")
 public class FileController {
-
 
     @ApiOperation("显示根目录信息")
     @GetMapping("/root")
@@ -115,13 +117,14 @@ public class FileController {
         ServletOutputStream outputStream = response.getOutputStream();
         if (downloadFile.exists()) {
             response.setContentType("application/octet-stream;charset=UTF-8");
+            String fileName = URLEncoder.encode(downloadFile.getName(), "UTF-8");
             if (downloadFile.isFile()) {
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadFile.getName() + "\"");
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + "\"");
                 response.addHeader("Content-Length", "" + downloadFile.length());
                 FileInputStream fileInputStream = new FileInputStream(downloadFile);
                 Streams.copy(fileInputStream, outputStream, true);
             } else {
-                response.setHeader("Content-Disposition", "attachment; filename=\"" + downloadFile.getName() + ".zip\"");
+                response.setHeader("Content-Disposition", "attachment; filename=\"" + fileName + ".zip\"");
                 ZipOutputStream zipOutputStream = new ZipOutputStream(outputStream);
                 FileUtils.compress(zipOutputStream, downloadFile, "");
                 zipOutputStream.close();
