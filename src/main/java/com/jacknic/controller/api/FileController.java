@@ -29,7 +29,7 @@ import java.util.zip.ZipOutputStream;
  * @author Jacknic
  */
 @CrossOrigin(origins = "*")
-@Api(tags = "file", value = "文件操作")
+@Api(tags = "file")
 @RestController
 @RequestMapping("/api/file")
 public class FileController {

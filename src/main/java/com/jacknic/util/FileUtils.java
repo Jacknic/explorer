@@ -1,8 +1,8 @@
 package com.jacknic.util;
 
 import com.jacknic.model.bean.FileBean;
+import org.apache.tomcat.util.http.fileupload.util.Streams;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -34,9 +34,11 @@ public class FileUtils {
      */
     public static ArrayList<FileBean> toFileBeans(File[] files) {
         ArrayList<FileBean> fileBeans = new ArrayList<>();
-        for (File file : files) {
-            if (file != null && file.exists()) {
-                fileBeans.add(new FileBean(file));
+        if (files != null && files.length != 0) {
+            for (File file : files) {
+                if (file != null && file.exists()) {
+                    fileBeans.add(new FileBean(file));
+                }
             }
         }
         return fileBeans;
@@ -89,15 +91,9 @@ public class FileUtils {
      * 压缩普通文件
      */
     private static void compressFile(ZipOutputStream zos, File file, String baseDir) throws Exception {
-        BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
         zos.putNextEntry(new ZipEntry(baseDir + "/" + file.getName()));
-        int len;
-        byte[] buffer = new byte[8192];
-        while ((len = bis.read(buffer)) != -1) {
-            zos.write(buffer, 0, len);
-        }
+        Streams.copy(new FileInputStream(file), zos, false);
         zos.closeEntry();
-        bis.close();
     }
 
 }
