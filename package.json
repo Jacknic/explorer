@@ -1,0 +1,23 @@
+{
+  "name": "explorer",
+  "version": "1.0.0",
+  "description": "在线文件管理器",
+  "main": "app.js",
+  "scripts": {
+    "server":"node app.js",
+    "test": "echo 'ok'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jacknic/explorer.git"
+  },
+  "keywords": [
+    "explorer"
+  ],
+  "author": "Jacknic",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Jacknic/explorer/issues"
+  },
+  "homepage": "https://github.com/Jacknic/explorer#readme"
+}
